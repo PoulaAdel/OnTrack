@@ -1,4 +1,4 @@
-name: CI Build & Package
+name: CI Build & Release
 
 on:
   push:
@@ -10,29 +10,62 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      - name: Set up Python
+      - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
 
-      - name: Install dependencies
-        run: pip install -r requirements.txt pyinstaller pyside6 pyyaml
-
-      - name: Build EXE
-        run: .\build.bat
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt pyinstaller pyside6 pyyaml
 
       - name: Install NSIS
+        shell: cmd
         run: choco install nsis --no-progress --fail-on-standard-error
 
-      - name: Build Installer
-        run: makensis installer.nsi
+      - name: Build EXE & Installer
+        shell: cmd
+        run: .\build.bat
 
       - name: Upload Artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: WorkflowTimer-Packages
           path: |
             dist/WorkflowTimer.exe
-            dist/WorkflowTimer_Installer.exe
+            build/WorkflowTimer_Installer.exe
+
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ github.run_number }}
+          release_name: Release v${{ github.run_number }}
+          draft: false
+          prerelease: false
+
+      - name: Upload EXE to Release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: dist/WorkflowTimer.exe
+          asset_name: WorkflowTimer.exe
+          asset_content_type: application/octet-stream
+
+      - name: Upload Installer to Release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: build/WorkflowTimer_Installer.exe
+          asset_name: WorkflowTimer_Installer.exe
+          asset_content_type: application/octet-stream
