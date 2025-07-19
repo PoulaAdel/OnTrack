@@ -1,0 +1,20 @@
+workflow:
+  - name: "Intro & Headings"
+    description: "Skim chapter intros and note key concepts"
+    duration_min: 15
+
+  - name: "First-Pass Skim"
+    description: "Scan for deep-dive flags"
+    duration_min: 30
+
+  - name: "Deep Read"
+    description: "Carefully read flagged sections"
+    duration_min: 60
+
+  - name: "Hands-On Exercise"
+    description: "Implement examples in code"
+    duration_min: 60
+
+  - name: "Quick Review"
+    description: "Review summaries and flashcards"
+    duration_min: 15

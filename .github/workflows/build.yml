@@ -1,0 +1,38 @@
+name: CI Build & Package
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt pyinstaller pyside6 pyyaml
+
+      - name: Build EXE
+        run: build.bat
+
+      - name: Install NSIS
+        run: choco install nsis --no-progress --fail-on-standard-error
+
+      - name: Build Installer
+        run: makensis installer.nsi
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: WorkflowTimer-Packages
+          path: |
+            dist/WorkflowTimer.exe
+            dist/WorkflowTimer_Installer.exe
