@@ -1,9 +1,0 @@
-.
-├── workflow.yaml
-├── timer_app.py
-├── requirements.txt
-├── build.bat
-├── installer.nsi
-└── .github
-    └── workflows
-        └── build.yml
