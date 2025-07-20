@@ -9,7 +9,7 @@ OutFile "build\OnTrack_Installer.exe"
 InstallDir "$PROGRAMFILES\OnTrack"
 
 ; Request normal user privileges
-RequestExecutionLevel user
+RequestExecutionLevel admin
 
 ; Pages
 Page directory         ; choose install folder

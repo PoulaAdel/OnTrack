@@ -30,7 +30,12 @@ if %errorlevel% neq 0 (
 echo.
 echo === Creating Windows Installer ===
 if not exist build mkdir build
-"C:\Program Files (x86)\NSIS\makensis.exe" installer.nsi
+"C:\Program Files (x86)\NSIS\makensis.exe" /V2 installer.nsi
+
+if exist installer.exe (
+  echo Found installer.exe in root directory, moving to build folder...
+  move /Y installer.exe build\OnTrack_Installer.exe
+)
 
 if %errorlevel% neq 0 (
   echo NSIS installer build failed!
