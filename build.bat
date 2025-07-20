@@ -3,8 +3,8 @@ setlocal
 
 echo.
 echo === Installing/Updating Dependencies ===
-py -m pip install --upgrade pip
-py -m pip install -r requirements.txt pyinstaller
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt pyinstaller
 
 echo.
 echo === Cleaning Previous Builds ===
@@ -14,7 +14,7 @@ if exist OnTrack.spec del /q OnTrack.spec
 
 echo.
 echo === Building Standalone Executable ===
-py -m pyinstaller --noconfirm --onefile --windowed ^
+python -m PyInstaller --noconfirm --onefile --windowed ^
     --name OnTrack ^
     --distpath dist ^
     --workpath build ^

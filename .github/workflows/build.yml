@@ -27,8 +27,8 @@ jobs:
       - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install pyinstaller pyside6 pyyaml
+          python -m pip install -r requirements.txt
+          python -m pip install PyInstaller==6.0.0 pyside6 pyyaml
 
       - name: Install NSIS
         run: choco install nsis --no-progress --fail-on-standard-error
