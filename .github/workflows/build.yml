@@ -55,25 +55,22 @@ jobs:
             dist/OnTrack.exe
             build/OnTrack_Installer.exe
 
+      - name: Create Tag
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git tag -a v${{ github.run_number }} -m "Release v${{ github.run_number }}"
+          git push origin v${{ github.run_number }}
+
       - name: Create GitHub Release
-        id: create_release
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: softprops/action-gh-release@v1
         with:
           tag_name: v${{ github.run_number }}
           name: Release v${{ github.run_number }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Upload EXE to Release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: dist/OnTrack.exe
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Upload Installer to Release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: build/OnTrack_Installer.exe
+          files: |
+            dist/OnTrack.exe
+            build/OnTrack_Installer.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
