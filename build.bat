@@ -3,19 +3,19 @@ setlocal
 
 echo.
 echo === Installing/Updating Dependencies ===
-python -m pip install --upgrade pip
-pip install -r requirements.txt pyinstaller
+py -m pip install --upgrade pip
+py -m pip install -r requirements.txt pyinstaller
 
 echo.
 echo === Cleaning Previous Builds ===
 if exist build rd /s /q build
 if exist dist rd /s /q dist
-if exist WorkflowTimer.spec del /q WorkflowTimer.spec
+if exist OnTrack.spec del /q OnTrack.spec
 
 echo.
 echo === Building Standalone Executable ===
 pyinstaller --noconfirm --onefile --windowed ^
-    --name WorkflowTimer ^
+    --name OnTrack ^
     --distpath dist ^
     --workpath build ^
     --specpath build ^
@@ -40,6 +40,6 @@ if %errorlevel% neq 0 (
 
 echo.
 echo === Build Complete ===
-echo Executable: dist\WorkflowTimer.exe
-echo Installer: build\WorkflowTimer_Installer.exe
+echo Executable: dist\OnTrack.exe
+echo Installer: build\OnTrack_Installer.exe
 pause

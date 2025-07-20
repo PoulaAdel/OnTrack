@@ -90,7 +90,7 @@ build.bat
 
 - Installs dependencies  
 - Cleans old builds  
-- Bundles `timer_app.py` into `dist\WorkflowTimer.exe`  
+- Bundles `timer_app.py` into `dist\OnTrack.exe`  
 
 ---
 
@@ -102,9 +102,9 @@ With NSIS installed:
 makensis installer.nsi
 ```
 
-This produces `dist\WorkflowTimer_Installer.exe` which:
+This produces `dist\OnTrack_Installer.exe` which:
 
-- Installs the EXE into `Program Files\WorkflowTimer`  
+- Installs the EXE into `Program Files\OnTrack`  
 - Creates Start menu and desktop shortcuts  
 
 ---

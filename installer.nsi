@@ -1,12 +1,12 @@
-; installer.nsi – NSIS script for WorkflowTimer
+; installer.nsi – NSIS script for OnTrack
 ; Assumes you run this from your repo root,
-; and that dist\WorkflowTimer.exe exists.
+; and that dist\OnTrack.exe exists.
 
 ; Output installer into build\
-OutFile "build\WorkflowTimer_Installer.exe"
+OutFile "build\OnTrack_Installer.exe"
 
 ; Default install directory
-InstallDir "$PROGRAMFILES\WorkflowTimer"
+InstallDir "$PROGRAMFILES\OnTrack"
 
 ; Request normal user privileges
 RequestExecutionLevel user
@@ -20,36 +20,36 @@ UninstPage instfiles   ; show uninstall progress
 Section "Install"
   
   ; Fail if EXE is missing
-  IfFileExists "dist\WorkflowTimer.exe" +2
-    Abort "ERROR: dist\WorkflowTimer.exe not found. Run build.bat first."
+  IfFileExists "dist\OnTrack.exe" +2
+    Abort "ERROR: dist\OnTrack.exe not found. Run build.bat first."
 
   ; Copy the EXE
   SetOutPath "$INSTDIR"
-  File "dist\WorkflowTimer.exe"
+  File "dist\OnTrack.exe"
 
   ; Write the uninstaller into the same folder
   WriteUninstaller "$INSTDIR\Uninstall.exe"
 
   ; Start Menu shortcut
-  CreateDirectory "$SMPROGRAMS\WorkflowTimer"
-  CreateShortcut "$SMPROGRAMS\WorkflowTimer\WorkflowTimer.lnk" "$INSTDIR\WorkflowTimer.exe"
+  CreateDirectory "$SMPROGRAMS\OnTrack"
+  CreateShortcut "$SMPROGRAMS\OnTrack\OnTrack.lnk" "$INSTDIR\OnTrack.exe"
 
   ; Desktop shortcut
-  CreateShortcut "$DESKTOP\WorkflowTimer.lnk" "$INSTDIR\WorkflowTimer.exe"
+  CreateShortcut "$DESKTOP\OnTrack.lnk" "$INSTDIR\OnTrack.exe"
 
 SectionEnd
 
 ; --- Uninstall Section ---
 Section "Uninstall"
   ; Remove installed files
-  Delete "$INSTDIR\WorkflowTimer.exe"
+  Delete "$INSTDIR\OnTrack.exe"
   Delete "$INSTDIR\Uninstall.exe"
 
   ; Remove shortcuts
-  Delete "$DESKTOP\WorkflowTimer.lnk"
-  Delete "$SMPROGRAMS\WorkflowTimer\WorkflowTimer.lnk"
+  Delete "$DESKTOP\OnTrack.lnk"
+  Delete "$SMPROGRAMS\OnTrack\OnTrack.lnk"
 
   ; Remove directories
-  RMDir "$SMPROGRAMS\WorkflowTimer"
+  RMDir "$SMPROGRAMS\OnTrack"
   RMDir "$INSTDIR"
 SectionEnd

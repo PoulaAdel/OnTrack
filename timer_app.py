@@ -15,7 +15,7 @@ class WorkflowStep:
     description: str
     duration_sec: int
 
-class WorkflowTimer(QWidget):
+class OnTrack(QWidget):
     def __init__(self, steps):
         super().__init__()
         self.steps = steps
@@ -235,6 +235,6 @@ if __name__ == "__main__":
         QMessageBox.critical(None, "Error", f"Failed to load workflow:\n{e}")
         sys.exit()
 
-    widget = WorkflowTimer(steps)
+    widget = OnTrack(steps)
     widget.show()
     sys.exit(app.exec())
