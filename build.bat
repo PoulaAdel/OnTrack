@@ -14,7 +14,7 @@ if exist OnTrack.spec del /q OnTrack.spec
 
 echo.
 echo === Building Standalone Executable ===
-pyinstaller --noconfirm --onefile --windowed ^
+py -m pyinstaller --noconfirm --onefile --windowed ^
     --name OnTrack ^
     --distpath dist ^
     --workpath build ^
