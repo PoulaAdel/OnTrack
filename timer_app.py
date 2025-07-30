@@ -43,18 +43,32 @@ class OnTrack(QWidget):
         # Header
         self.label_header = QLabel("", self)
         self.label_header.setAlignment(Qt.AlignCenter)
-        self.label_header.setStyleSheet("font-size: 16px; font-weight: bold;")
+        self.label_header.setStyleSheet("""
+            font-size: 16px; 
+            font-weight: bold;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 200);
+        """)
 
         # Description
         self.label_desc = QLabel("", self)
         self.label_desc.setAlignment(Qt.AlignCenter)
         self.label_desc.setWordWrap(True)
-        self.label_desc.setStyleSheet("font-size: 12px;")
+        self.label_desc.setStyleSheet("""
+            font-size: 12px;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 200);
+        """)
 
         # Timer display
         self.label_timer = QLabel("", self)
         self.label_timer.setAlignment(Qt.AlignCenter)
-        self.label_timer.setStyleSheet("font-size: 36px;")
+        self.label_timer.setStyleSheet("""
+            font-size: 36px;
+            color: white;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 200);
+        """)
 
         # Buttons
         self.btn_start = QPushButton("Start", self)
@@ -87,14 +101,19 @@ class OnTrack(QWidget):
             btn.setFixedHeight(24)
             btn.setStyleSheet("""
                 QPushButton {
-                    background-color: rgba(255,255,255,30%);
+                    background-color: rgba(50, 50, 50, 220);
                     color: white;
-                    border: none;
+                    border: 1px solid rgba(100, 100, 100, 180);
                     border-radius: 4px;
                     padding: 2px 6px;
+                    font-weight: bold;
                 }
                 QPushButton:hover {
-                    background-color: rgba(255,255,255,60%);
+                    background-color: rgba(70, 70, 70, 240);
+                    border: 1px solid rgba(150, 150, 150, 200);
+                }
+                QPushButton:pressed {
+                    background-color: rgba(30, 30, 30, 250);
                 }
             """)
             hbox.addWidget(btn)
@@ -103,8 +122,9 @@ class OnTrack(QWidget):
         # Transparent background style
         self.setStyleSheet("""
             QWidget {
-                background-color: rgba(30, 30, 30, 200);
+                background-color: rgba(20, 20, 20, 240);
                 color: white;
+                border: 2px solid rgba(100, 100, 100, 150);
                 border-radius: 8px;
             }
         """)
