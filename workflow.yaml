@@ -1,13 +1,16 @@
 chapter_3:
   title: "C# 3: LINQ and Everything That Comes With It"
+
   overview:
     duration_min: 15
     description: "Read the chapter introduction, objectives, and get a high-level view of LINQ features."
+
   sections:
     - id: "3.1"
       title: "Automatically Implemented Properties"
       duration_min: 15
       description: "Study auto-property syntax, default values, and scenarios for use."
+
     - id: "3.2"
       title: "Implicit Typing"
       duration_min: 15
@@ -25,6 +28,7 @@ chapter_3:
           title: "Implicitly Typed Arrays"
           duration_min: 5
           description: "Understand how implicitly typed arrays work and when to use them."
+
     - id: "3.3"
       title: "Object and Collection Initializers"
       duration_min: 20
@@ -46,6 +50,7 @@ chapter_3:
           title: "Benefits of Single-Expression Initialization"
           duration_min: 5
           description: "Note why expression-based initialization can be more concise."
+
     - id: "3.4"
       title: "Anonymous Types"
       duration_min: 15
@@ -63,6 +68,7 @@ chapter_3:
           title: "Limitations"
           duration_min: 5
           description: "List scenarios where anonymous types fall short."
+
     - id: "3.5"
       title: "Lambda Expressions"
       duration_min: 25
@@ -80,6 +86,7 @@ chapter_3:
           title: "Expression Trees"
           duration_min: 10
           description: "Understand expression-tree fundamentals and use cases."
+
     - id: "3.6"
       title: "Extension Methods"
       duration_min: 15
@@ -97,6 +104,7 @@ chapter_3:
           title: "Chaining Method Calls"
           duration_min: 5
           description: "Chain multiple extensions in a fluent style."
+
     - id: "3.7"
       title: "Query Expressions"
       duration_min: 20
@@ -114,10 +122,12 @@ chapter_3:
           title: "Choosing Syntax: Query vs. Method Chaining"
           duration_min: 10
           description: "Compare query syntax against method-chain syntax."
+
     - id: "3.8"
       title: "The End Result: LINQ"
       duration_min: 15
       description: "Review full end-to-end LINQ examples and real-world patterns."
+
     - id: "summary"
       title: "Summary"
       duration_min: 15
