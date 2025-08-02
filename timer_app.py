@@ -11,14 +11,21 @@ from PySide6.QtWidgets import (
 
 @dataclass
 class WorkflowStep:
+    id: str
     name: str
     description: str
     duration_sec: int
+    subsections: list = None
+    
+    def __post_init__(self):
+        if self.subsections is None:
+            self.subsections = []
 
 class OnTrack(QWidget):
-    def __init__(self, steps):
+    def __init__(self, workflow_data):
         super().__init__()
-        self.steps = steps
+        self.workflow_data = workflow_data
+        self.flat_steps = self._flatten_workflow(workflow_data)
         self.index = 0
         self.remaining = 0
         self.paused = True
@@ -26,6 +33,41 @@ class OnTrack(QWidget):
 
         self._init_ui()
         self._load_step(0)
+        
+    def _flatten_workflow(self, workflow_data):
+        """Convert nested workflow into flat list of steps"""
+        steps = []
+        
+        # Add overview if present
+        if 'overview' in workflow_data:
+            overview = workflow_data['overview']
+            steps.append(WorkflowStep(
+                id='overview',
+                name=f"{workflow_data.get('title', 'Overview')}",
+                description=overview.get('description', ''),
+                duration_sec=overview.get('duration_min', 0) * 60
+            ))
+        
+        # Process sections
+        for section in workflow_data.get('sections', []):
+            # Add main section
+            steps.append(WorkflowStep(
+                id=section['id'],
+                name=f"{section['id']}: {section['title']}",
+                description=section.get('description', ''),
+                duration_sec=section.get('duration_min', 0) * 60
+            ))
+            
+            # Add subsections if present
+            for subsection in section.get('subsections', []):
+                steps.append(WorkflowStep(
+                    id=subsection['id'],
+                    name=f"{subsection['id']}: {subsection['title']}",
+                    description=subsection.get('description', ''),
+                    duration_sec=subsection.get('duration_min', 0) * 60
+                ))
+        
+        return steps
         self._snap_to_corner()
 
     def _init_ui(self):
@@ -152,13 +194,13 @@ class OnTrack(QWidget):
         self.move(x, y)
 
     def _load_step(self, idx):
-        if idx >= len(self.steps):
+        if idx >= len(self.flat_steps):
             QMessageBox.information(self, "Done", "Workflow complete!")
             self.fade_out()
             return
 
-        step = self.steps[idx]
-        self.label_header.setText(f"Step {idx+1}/{len(self.steps)}: {step.name}")
+        step = self.flat_steps[idx]
+        self.label_header.setText(f"Step {idx+1}/{len(self.flat_steps)}: {step.name}")
         self.label_desc.setText(step.description)
         self.remaining = step.duration_sec
         self._update_timer_display()
@@ -178,7 +220,7 @@ class OnTrack(QWidget):
         elif self.remaining == 0:
             QMessageBox.information(
                 self, "Step Complete",
-                f"Finished: {self.steps[self.index].name}"
+                f"Finished: {self.flat_steps[self.index].name}"
             )
             self.next_step()
 
@@ -226,14 +268,25 @@ class OnTrack(QWidget):
 def load_workflow(path: str):
     with open(path, 'r', encoding='utf-8') as f:
         data = yaml.safe_load(f)
-    steps = []
-    for item in data.get('workflow', []):
-        steps.append(WorkflowStep(
-            name=item.get('name', ''),
-            description=item.get('description', ''),
-            duration_sec=item.get('duration_min', 0) * 60
-        ))
-    return steps
+    
+    # Handle both old format (workflow list) and new format (nested structure)
+    if 'workflow' in data:
+        # Old format - convert to new format
+        workflow_data = {
+            'title': 'Workflow',
+            'sections': []
+        }
+        for i, item in enumerate(data['workflow']):
+            workflow_data['sections'].append({
+                'id': str(i+1),
+                'title': item.get('name', ''),
+                'description': item.get('description', ''),
+                'duration_min': item.get('duration_min', 0)
+            })
+        return workflow_data
+    else:
+        # New nested format - return first chapter/section
+        return list(data.values())[0]
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
@@ -248,13 +301,13 @@ if __name__ == "__main__":
             sys.exit()
 
     try:
-        steps = load_workflow(yaml_path)
-        if not steps:
-            raise ValueError("No steps defined in workflow.")
+        workflow_data = load_workflow(yaml_path)
+        if not workflow_data:
+            raise ValueError("No workflow defined.")
     except Exception as e:
         QMessageBox.critical(None, "Error", f"Failed to load workflow:\n{e}")
         sys.exit()
 
-    widget = OnTrack(steps)
+    widget = OnTrack(workflow_data)
     widget.show()
     sys.exit(app.exec())
